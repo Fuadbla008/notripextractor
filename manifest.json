@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "No Trip Extractor",
+  "version": "1.1.0",
+  "description": "Scrape idle vehicle data from Packzy fleet dashboard across all pages (side panel).",
+  "permissions": ["activeTab", "scripting", "storage", "sidePanel", "tabs"],
+  "host_permissions": ["https://dash.packzy.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "action": {
+    "default_title": "No Trip Extractor"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://dash.packzy.com/admin/fleet/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

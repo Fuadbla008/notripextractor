@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="sidepanel.css" />
+  <title>No Trip Extractor</title>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <h1>No Trip Extractor</h1>
+    </div>
+    <span class="badge">v1.1</span>
+  </header>
+
+  <section class="controls">
+    <div class="grid-2">
+      <div class="field">
+        <label for="idleFor">Idle For</label>
+        <select id="idleFor">
+          <option value="12h">12h</option>
+          <option value="24h" selected>24h</option>
+          <option value="3d">3d</option>
+          <option value="7d">7d</option>
+          <option value="14d">14d</option>
+          <option value="30d">30d</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="concurrency">Concurrent Pages</label>
+        <select id="concurrency">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5 (max)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button id="startBtn" class="btn primary">▶ Start</button>
+      <button id="stopBtn" class="btn danger" disabled>■ Stop</button>
+      <button id="resumeBtn" class="btn warn" disabled>⟳ Resume</button>
+    </div>
+
+    <div class="btn-row">
+      <button id="csvBtn" class="btn ghost" disabled>⬇ CSV</button>
+      <button id="jsonBtn" class="btn ghost" disabled>⬇ JSON</button>
+      <button id="clearBtn" class="btn ghost">✕ Clear</button>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <span class="stat-label">Page</span>
+      <span class="stat-value" id="statPage">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Records</span>
+      <span class="stat-value" id="statRecords">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Status</span>
+      <span class="stat-value" id="statStatus">Idle</span>
+    </div>
+  </section>
+
+  <div class="progress-wrap">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-info">
+      <span id="progressText">Ready</span>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Console</h2>
+      <button class="mini-btn" id="clearConsole">clear</button>
+    </div>
+    <div class="console" id="console"></div>
+  </section>
+
+  <section class="panel flex-1">
+    <div class="panel-head">
+      <h2>Preview <span class="muted" id="previewCount">(0)</span></h2>
+    </div>
+    <div class="preview" id="preview">
+      <div class="empty">No data yet</div>
+    </div>
+  </section>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
