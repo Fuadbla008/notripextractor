@@ -11,7 +11,7 @@
       <span class="brand-dot"></span>
       <h1>No Trip Extractor</h1>
     </div>
-    <span class="badge">v1.1</span>
+    <span class="badge">v1.2</span>
   </header>
 
   <section class="controls">
@@ -27,7 +27,6 @@
           <option value="30d">30d</option>
         </select>
       </div>
-
       <div class="field">
         <label for="concurrency">Concurrent Pages</label>
         <select id="concurrency">
@@ -44,12 +43,6 @@
       <button id="startBtn" class="btn primary">▶ Start</button>
       <button id="stopBtn" class="btn danger" disabled>■ Stop</button>
       <button id="resumeBtn" class="btn warn" disabled>⟳ Resume</button>
-    </div>
-
-    <div class="btn-row">
-      <button id="csvBtn" class="btn ghost" disabled>⬇ CSV</button>
-      <button id="jsonBtn" class="btn ghost" disabled>⬇ JSON</button>
-      <button id="clearBtn" class="btn ghost">✕ Clear</button>
     </div>
   </section>
 
@@ -69,13 +62,39 @@
   </section>
 
   <div class="progress-wrap">
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-    <div class="progress-info">
-      <span id="progressText">Ready</span>
-    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-info"><span id="progressText">Ready</span></div>
   </div>
+
+  <!-- Category Tabs -->
+  <section class="tabs" id="tabs">
+    <button class="tab active" data-cat="all">All <span class="cnt" id="cnt-all">0</span></button>
+    <button class="tab" data-cat="inside_savar">Inside <span class="cnt" id="cnt-inside_savar">0</span></button>
+    <button class="tab" data-cat="outside_savar">Outside Savar <span class="cnt" id="cnt-outside_savar">0</span></button>
+    <button class="tab" data-cat="inside_central">In Central <span class="cnt" id="cnt-inside_central">0</span></button>
+    <button class="tab" data-cat="outside_central">Out Central <span class="cnt" id="cnt-outside_central">0</span></button>
+    <button class="tab" data-cat="not_found">Not Found <span class="cnt" id="cnt-not_found">0</span></button>
+  </section>
+
+  <!-- CSV download row -->
+  <section class="downloads">
+    <div class="dl-row">
+      <button class="dl-btn" id="csvAll">⬇ All CSV</button>
+      <button class="dl-btn" id="jsonAll">⬇ All JSON</button>
+    </div>
+    <div class="dl-row">
+      <button class="dl-btn sm" id="csvInsideSavar">inside_savar</button>
+      <button class="dl-btn sm" id="csvOutsideSavar">outside_savar</button>
+    </div>
+    <div class="dl-row">
+      <button class="dl-btn sm" id="csvInsideCentral">inside_central</button>
+      <button class="dl-btn sm" id="csvOutsideCentral">outside_central</button>
+    </div>
+    <div class="dl-row">
+      <button class="dl-btn sm" id="csvNotFound">not_found</button>
+      <button class="dl-btn sm" id="csvFiltered">⬇ Filtered CSV</button>
+    </div>
+  </section>
 
   <section class="panel">
     <div class="panel-head">
@@ -88,6 +107,7 @@
   <section class="panel flex-1">
     <div class="panel-head">
       <h2>Preview <span class="muted" id="previewCount">(0)</span></h2>
+      <button class="mini-btn" id="clearAll">clear data</button>
     </div>
     <div class="preview" id="preview">
       <div class="empty">No data yet</div>
