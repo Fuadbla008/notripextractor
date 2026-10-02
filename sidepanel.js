@@ -186,14 +186,30 @@ function csvEscape(v) {
   return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
 }
 function toCSV(records) {
-  const headers = ['vehicleNo','vehicleModel','vehicleId','operatingHub','idleTime','date','time','tripId','category','area','categoryLabel'];
+  // internal key → CSV column header
+  const columns = [
+    ['vehicleNo',      'vehicle no'],
+    ['vehicleModel',   'vehicle model'],
+    ['vehicleId',      'vehicle id'],
+    ['supervisorName', 'supervisor name'],   // ← new, vehicle id এর পরে
+    ['operatingHub',   'operating hub'],
+    ['idleTime',       'idle time'],
+    ['date',           'last trip date'],    // ← rename
+    ['time',           'last trip time'],    // ← rename
+    ['tripId',         'trip id']
+  ];
+  // NOTE: category / area / categoryLabel বাদ দেওয়া হলো
+
+  const headers = columns.map((c) => c[1]);
   const lines = [headers.join(',')];
+
   for (const r of records) {
-    const row = {
-      ...r,
-      categoryLabel: CAT_LABEL[r.category] || r.category
-    };
-    lines.push(headers.map((h) => csvEscape(row[h])).join(','));
+    const row = columns.map(([key]) => {
+      let v = r[key];
+      if (key === 'supervisorName' && (!v || !String(v).trim())) v = 'not assigned';
+      return v;
+    });
+    lines.push(row.map(csvEscape).join(','));
   }
   return '\uFEFF' + lines.join('\r\n');
 }

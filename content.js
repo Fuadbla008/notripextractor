@@ -13,7 +13,7 @@
   };
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-  const bcast = (p) => { try { chrome.runtime.sendMessage(p).catch(() => {}); } catch (e) {} };
+  const bcast = (p) => { try { chrome.runtime.sendMessage(p).catch(() => { }); } catch (e) { } };
 
   function log(msg, type = 'info') {
     const e = { msg, type, ts: Date.now() };
@@ -36,7 +36,7 @@
   const M_PER_DEG_LNG_AT = (lat) => 111320 * Math.cos(lat * Math.PI / 180);
 
   function latLngToM(lat, lng, refLat, refLng) {
-    return [ (lng - refLng) * M_PER_DEG_LNG_AT(refLat), (lat - refLat) * M_PER_DEG_LAT ];
+    return [(lng - refLng) * M_PER_DEG_LNG_AT(refLat), (lat - refLat) * M_PER_DEG_LAT];
   }
   function pointToSegmentM(px, py, ax, ay, bx, by) {
     const dx = bx - ax, dy = by - ay;
@@ -79,7 +79,7 @@
     return minDistM <= tolKm * 1000;
   }
 
-    // ---------- Classification ----------
+  // ---------- Classification ----------
   function isCentralWarehouse(name) {
     const pats = CFG.WAREHOUSE.centralPatterns || [];
     return pats.some((p) => p.test(name));
@@ -111,7 +111,7 @@
     }
 
     // 4. regular hub
-    if (insidePrimary)  return { category: 'inside_savar',  area: primary.name };
+    if (insidePrimary) return { category: 'inside_savar', area: primary.name };
     if (insideAnyOther) return { category: 'outside_savar', area: null };
     return { category: 'outside_central', area: null };
   }
@@ -145,6 +145,16 @@
       }
 
       const hubEl = tr.querySelector('td.fv-c--hub span');
+      // Supervisor Name
+      let supervisorName = 'not assigned';
+      const supDiv = tr.querySelector('.fv-supervisor');
+      if (supDiv) {
+        const aEl = supDiv.querySelector('a');
+        const txt = aEl ? aEl.innerText.trim() : '';
+        if (txt) supervisorName = txt;
+      }
+
+
       const operatingHub = hubEl ? hubEl.innerText.trim() : '';
 
       const idleForEl = tr.querySelector('.fv-idle .fv-idle__for');
@@ -166,6 +176,7 @@
       out.push({
         vehicleNo, vehicleModel, vehicleId, operatingHub, idleTime,
         date, time, tripId,
+        supervisorName,
         category, area
       });
     });
@@ -247,7 +258,7 @@
 
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     switch (msg?.type) {
-      case 'PING':      sendResponse({ ok: true }); return true;
+      case 'PING': sendResponse({ ok: true }); return true;
       case 'GET_STATE': sendResponse({ ok: true, state: snapshot() }); return true;
       case 'START':
         if (state.running) { sendResponse({ ok: false, reason: 'Already running' }); return true; }
@@ -255,7 +266,7 @@
         state.concurrency = Math.max(1, Math.min(5, Number(msg.concurrency) || 3));
         runScrape(false);
         sendResponse({ ok: true }); return true;
-      case 'STOP':   stopScrape(); sendResponse({ ok: true }); return true;
+      case 'STOP': stopScrape(); sendResponse({ ok: true }); return true;
       case 'RESUME':
         if (state.running) { sendResponse({ ok: false, reason: 'Already running' }); return true; }
         runScrape(true); sendResponse({ ok: true }); return true;
